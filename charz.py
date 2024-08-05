@@ -33,20 +33,16 @@ repeat_ball = regular_poks_repeat + legendary_poks
 # Add your chat id or username in "YOUR_CHAT" section to recieve notification (I prefer using livegram connected bot for notifications)
 async def send_alert(client, alert_type, message):
     try:
-        sent_message = await client.send_message(
-            "@Hexa_AlertBot", f"**{alert_type} Alert:**\n\n{message}",
-            pin=True  # This will pin the message in the user's DM
-        ) # If using a group chat as notification centre, add username of the id you want to get notifications on, anywhere on 2nd message without replacing anything, except the one being used for auto 
+        sent_message = await client.send_message("@Hexa_AlertBot", f"**{alert_type} Alert:**\n\n{message}") # If using a group chat as notification centre, add username of the id you want to get notifications on, anywhere on 2nd message without replacing anything, except the one being used for auto 
+        await client.pin_message("@Hexa_AlertBot", sent_message.id, notify=True)
         print(f"{alert_type} Alert sent successfully and pinned!")
     except FloodWaitError as e:
         print(f"⚠️ FloodWait Enforced. Waiting for {e.seconds} seconds.")
         await asyncio.sleep(e.seconds)
-        sent_message = await client.send_message(
-            "@Hexa_AlertBot", f"**{alert_type} Alert:**\n\n{message}",
-            pin=True  
-        ) 
+        sent_message = await client.send_message("@Hexa_AlertBot", f"**{alert_type} Alert:**\n\n{message}") 
+        await client.pin_message("@Hexa_AlertBot", sent_message.id, notify=True)
         print(f"{alert_type} Alert sent successfully and pinned!")
-
+        
 async def click_button(event, text=None, row=None, col=None):
     try:
         if text:
